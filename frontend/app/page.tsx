@@ -1,6 +1,8 @@
 
 export default function Home() {
   return (
-    <div>Testing</div>
+    <div>
+      <h1>Welcome to NylonPOS</h1>
+    </div >
   );
 }
