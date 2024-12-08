@@ -11,6 +11,7 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     payment = models.CharField(max_length=5)
     ticket = models.CharField(max_length=1000)
+    address = models.CharField(max_length=30, null=True)
 
     def __str__(self):
         return f"Order {self.order_id} by {self.customer_name}"

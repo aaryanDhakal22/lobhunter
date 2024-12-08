@@ -2,9 +2,9 @@ from ninja import NinjaAPI
 from .fetch import *
 from .models import Order
 from pprint import pprint
-from pyquery import PyQuery as pq
 from bs4 import BeautifulSoup
 from datetime import datetime
+from django.http import JsonResponse
 
 api = NinjaAPI()
 
@@ -29,7 +29,16 @@ def parser(html_content):
         formatted_date = date_object.strftime("%Y-%m-%d")
     except ValueError:
         formatted_date = None  # Fallback in case the format doesn't match
-
+    # Check if topic mentions delivery
+    topic = soup.find("h1")
+    address = None
+    if topic and topic.get_text() and "delivery" in topic.get_text().lower():
+        # Extract address details
+        street = soup.find(["font", "b"], string=lambda s: s and "Street" in s)
+        if street:
+            street_text = street.get_text(strip=True).replace("Street:", "").strip()
+            address = f"{street_text}"
+            address = address.split(",")[0]
     # Extract details
     order_number = safe_find_and_split("Order#", "#")
     customer_name = safe_find_and_split("Customer Name:", ": ")
@@ -53,6 +62,7 @@ def parser(html_content):
         "total": order_total,
         "payment": payment_type,
         "ticket": html_content,
+        "address": address,
     }
 
 
@@ -78,4 +88,5 @@ def orders(request):
 
 @api.get("/order/{order_id}")
 def order(request, order_id: int):
-    return Order.objects.filter(order_number=order_id).values()
+    order_data = Order.objects.filter(order_number=order_id).values()
+    return list(order_data)
