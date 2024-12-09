@@ -1,0 +1,14 @@
+1) The boss opens the website
+
+2) The boss click a button to view the block list
+
+3) The boss clicks a button to add a user to the block list
+
+4) The boss is prompted to enter either the address or the phone number 
+
+5) The boss enters the address or the phone number
+
+6) The boss clicks a button to submit the address or phone number
+
+7) The boss is sent back to the block list page
+

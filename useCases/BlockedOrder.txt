@@ -1,0 +1,7 @@
+1) The boss opens the website
+
+2) The boss sees a stack of online orders besides which there are three buttons - "Accept", "Reject" and "View Order"
+
+3) One of the orders is marked red as it is from a blocked user
+
+4) The boss can either accept or reject the order

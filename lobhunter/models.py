@@ -12,6 +12,16 @@ class Order(models.Model):
     payment = models.CharField(max_length=5)
     ticket = models.CharField(max_length=1000)
     address = models.CharField(max_length=30, null=True)
+    time = models.TimeField(default="00:00:00")
 
     def __str__(self):
-        return f"Order {self.order_id} by {self.customer_name}"
+        return f"Order {self.order_number} by {self.customer_name}"
+
+
+class PhoneBlockList(models.Model):
+    phone = models.IntegerField()
+    reason = models.CharField(max_length=1000)
+class AddressBlockList(models.Model):
+    phone = models.IntegerField()
+    reason = models.CharField(max_length=1000)
+

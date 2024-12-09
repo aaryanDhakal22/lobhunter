@@ -8,7 +8,7 @@ import base64
 from pprint import pprint
 
 # Define the scopes required for accessing Gmail
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = ["https://mail.google.com/"]
 
 
 def authenticate_gmail():
@@ -32,13 +32,13 @@ def authenticate_gmail():
 def fetcher():
     creds = authenticate_gmail()
     service = build("gmail", "v1", credentials=creds)
-    # request a list of all the messages
-    result = service.users().messages().list(userId="me").execute()
-    # print(result)
+    # request a list of all the messages in the inbox
+    result = service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
     messages = result.get("messages")
     all_messages = []
+    if not messages:
+        return all_messages
     for msg in messages:
-
         txt = service.users().messages().get(userId="me", id=msg["id"]).execute()
         email_id = txt["id"]
         payload = txt["payload"]
@@ -49,4 +49,6 @@ def fetcher():
         data = data.replace("-", "+").replace("_", "/")
         decoded_data = base64.b64decode(data).decode("utf-8")
         all_messages.append({"email_id": email_id, "data": decoded_data})
-    return all_messages
+        # Move the message to trash
+        service.users().messages().trash(userId="me", id=email_id).execute()
+    return all_messages if all_messages else []

@@ -1,0 +1,13 @@
+1) The boss opens the website
+
+2) The boss sees a stack of online orders besides which there are three buttons - "Accept", "Reject" and "View Order"
+
+3) On Clicking the view order the boss sees the details of the order
+
+4) The boss can either accept or reject the order
+
+5) If the boss accepts the order, the order is marked approved and he is sent back to the home page
+
+6) If the boss rejects the order, the order is marked rejected and he is sent back to the home page
+
+7) If none of the buttons are clicked then item remains on the stack
