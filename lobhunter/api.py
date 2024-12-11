@@ -8,40 +8,38 @@ from typing import Callable, List, Dict
 
 api = NinjaAPI()
 
-def default_fetcher() -> List[Dict]:
-    """Default fetcher for production."""
-    from .fetch import fetcher
-
-    return fetcher()
-
 
 @api.get("/sync")
-def sync_up(request, fetcher: Callable = default_fetcher):
+def sync_up(request):
     all_messages = fetcher()
-    if all_messages:
+    # print("The messages received are " ,all_messages[0]["email_id"])
+    blocked = 0
+    if len(all_messages) > 0:
         for entry in all_messages:
-            # if Order.objects.filter(email_id=entry["email_id"]).exists():
-            #     print("Order already exists")
-            #     continue
             order = parser(entry["data"])
+            print("\n\nThe order numer is ", order["order_number"])
+
             # check if phone number is in block list
             if PhoneBlockList.objects.filter(phone=order["phone"]).exists():
                 print("Phone number in block list")
-                return {
-                    "message": "Phone number in block list",
-                    "order_number": order["order_number"],
-                }
+                order["status"] = "BLOCKED"
+                blocked += 1
+
             # check if address is in block list
-            if AddressBlockList.objects.filter(address=order["address"]).exists():
+            elif AddressBlockList.objects.filter(address=order["address"]).exists():
                 print("Address in block list")
-                return {
-                    "message": "Address in block list",
-                    "order_number": order["order_number"],
-                }
+                order["status"] = "BLOCKED"
+                blocked += 1
+            else:
+                print("No Blocked")
+
             blob = {"email_id": entry["email_id"], **order}
             Order.objects.create(**blob)
             print("Order created")
-        return {"message": "Synced up"}
+    else:
+        print("No messages to add")
+
+    return {"message": "Synced up", "blocked": blocked}
 
 
 @api.get("/orders")
@@ -49,13 +47,13 @@ def orders(request):
     return list(Order.objects.all().values())
 
 
-@api.get("/order/{order_id}")
+@api.get("/order/detail/{order_id}")
 def order(request, order_id: int):
     order_data = Order.objects.filter(order_number=order_id).values()
     return list(order_data)
 
 
-@api.get("/order/{date}")
+@api.get("/order/date/{date}")
 def order_on_date(request, date: str):
     order_data = Order.objects.filter(date=date).values()
     return list(order_data)

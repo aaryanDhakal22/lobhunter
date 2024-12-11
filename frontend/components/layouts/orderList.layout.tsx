@@ -1,22 +1,23 @@
-import Order from "../ui/order.component"
-async function getOrders() {
-    const response = await fetch("http://localhost:8000/api/orders");
-    const orders = await response.json();
-    return orders;
-}
+import Order from "../ui/order.component";
 
-export default async function OrderList() {
-    const orders = await getOrders();
-    console.log(orders);
+interface OrderListProps {
+    orders: OrderProps[];
+    onSelectOrder: (id: string) => void;
+};
+
+const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
+
     return (
-        <div>
-            <div className="text-center text-3xl">Order List</div>
-            <div className="flex h-screen flex-row flex-wrap justify-around content-around">
+        <div className=" p-10">
+            <div className="text-center text-3xl mb-10">ORDERS</div>
+            <div className="flex h-screen flex-col">
 
                 {orders.map((order: any) => (
-                    <Order key={order.email_id} orderId={order.order_number} name={order.customer_name} />
+                    <Order key={order.email_id} order_number={order.order_number} address={order.address} customer_name={order.customer_name} changeClick={() => onSelectOrder(order.id)} />
                 ))}
             </div>
         </div>
     );
 }
+
+export default OrderList;

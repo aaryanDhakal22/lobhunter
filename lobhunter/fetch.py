@@ -32,7 +32,6 @@ def authenticate_gmail():
 def fetcher():
     creds = authenticate_gmail()
     service = build("gmail", "v1", credentials=creds)
-    # request a list of all the messages in the inbox
     result = service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
     messages = result.get("messages")
     all_messages = []

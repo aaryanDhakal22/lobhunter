@@ -1,25 +1,38 @@
-import Link from "next/link";
-
-interface OrderProps {
-    orderId: string;
-    name: string;
+interface OrderViewProps {
+    order_number: string;
+    address: string;
+    customer_name: string;
+    changeClick: () => void;
 }
 
-async function getOrders(order_id: string) {
-    const response = await fetch(`http://localhost:8000/api/orders/${order_id}`);
-    const orders = await response.json();
-    return orders;
-}
-
-const Order: React.FC<OrderProps> = ({ orderId, name }) => {
+const Order: React.FC<OrderViewProps> = ({ order_number, address, customer_name, changeClick }) => {
     return (
-        <Link href={`/orders/${orderId}`}>
-            <div className="bg-green-500 p-3">
-                <div className="text-center text-2xl">Order No:{orderId}</div>
-                <div className="text-center text-xl">{name}</div>
+
+        <div className="p-3 m-2 rounded-lg outline outline-2 outline-green-600 grid grid-cols-3 ">
+
+            <div onClick={changeClick} className="cursor-pointer">
+
+                <div className="text-xl text-green-500">Order No : {order_number}</div>
+                <div className="text-3xl">{customer_name}</div>
+            </div>
+            <div className="text-xl">
+
+                {address ? (
+                    <a href={`http://maps.google.com/?q=${address}`} target="blank" rel="noreferrer noopener" >
+                        <div>Address:</div>
+                        <div>{address}</div>
+                    </a>
+                ) : (
+                    "PICKUP"
+                )}
 
             </div>
-        </Link>
+            <div className="grid grid-cols-3 p-4 gap-4">
+                <button className="bg-green-500 p-3 rounded-lg">Accept</button>
+                <button className="bg-red-500 p-3 rounded-lg">Reject</button>
+                <button className="bg-slate-500 p-3 rounded-lg">Dismiss</button>
+            </div>
+        </div>
     );
 };
 
