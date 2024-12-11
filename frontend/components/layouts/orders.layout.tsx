@@ -10,11 +10,16 @@ const OrdersPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+    const handleSelectedOrder = (id: string) => {
+        setSelectedOrder(id);
+    }
+
+
     // Fetch orders from the API
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://10.1.10.38:8000/api/orders');
+                const response = await fetch('http://10.0.0.167:8000/api/orders');
                 if (!response.ok) {
                     throw new Error('Failed to fetch orders');
                 }
@@ -53,7 +58,7 @@ const OrdersPage: React.FC = () => {
 
                     <OrderList
                         orders={orders}
-                        onSelectOrder={(id: string) => setSelectedOrder(id)}
+                        onSelectOrder={handleSelectedOrder}
                     />
                 </div>
             ) : (

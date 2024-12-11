@@ -2,7 +2,12 @@
 import Link from "next/link"
 
 async function syncOrders() {
-    const response = await fetch("http://localhost:8000/api/sync");
+    const response = await fetch("http://10.0.0.167:8000/api/sync", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
     const orders = await response.json();
     return orders;
 }

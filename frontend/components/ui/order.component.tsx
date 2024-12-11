@@ -2,7 +2,7 @@ interface OrderViewProps {
     order_number: string;
     address: string;
     customer_name: string;
-    changeClick: () => void;
+    changeClick: (id: string) => void;
 }
 
 const Order: React.FC<OrderViewProps> = ({ order_number, address, customer_name, changeClick }) => {
@@ -10,7 +10,7 @@ const Order: React.FC<OrderViewProps> = ({ order_number, address, customer_name,
 
         <div className="p-3 m-2 rounded-lg outline outline-2 outline-green-600 grid grid-cols-3 ">
 
-            <div onClick={changeClick} className="cursor-pointer">
+            <div onClick={() => changeClick(order_number)} className="cursor-pointer">
 
                 <div className="text-xl text-green-500">Order No : {order_number}</div>
                 <div className="text-3xl">{customer_name}</div>
