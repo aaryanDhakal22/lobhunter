@@ -40,7 +40,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "components/layouts/blocktile.layout.tsx"  ],
   "exclude": [
     "node_modules"
   ]

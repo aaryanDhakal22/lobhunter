@@ -22,13 +22,13 @@ def sync_up(request):
             # check if phone number is in block list
             if PhoneBlockList.objects.filter(phone=order["phone"]).exists():
                 print("Phone number in block list")
-                order["status"] = "BLOCKED"
+                order["blocked"] = True
                 blocked += 1
 
             # check if address is in block list
             elif AddressBlockList.objects.filter(address=order["address"]).exists():
                 print("Address in block list")
-                order["status"] = "BLOCKED"
+                order["blocked"] = True
                 blocked += 1
             else:
                 print("No Blocked")
@@ -49,11 +49,12 @@ def orders(request):
 
 @api.get("/order/detail/{order_id}")
 def order(request, order_id: int):
-    order_data = Order.objects.filter(order_number=order_id).values()
-    return list(order_data)
+    order_data = Order.objects.filter(order_number=order_id).values()[0]
+    return order_data
 
 
 @api.get("/order/date/{date}")
 def order_on_date(request, date: str):
-    order_data = Order.objects.filter(date=date).values()
-    return list(order_data)
+    order_data = Order.objects.filter(date=date).values()[0]
+
+    return order_data

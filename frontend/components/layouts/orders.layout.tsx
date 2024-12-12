@@ -19,7 +19,7 @@ const OrdersPage: React.FC = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://10.0.0.167:8000/api/orders');
+                const response = await fetch('http://10.1.10.38:8000/api/orders');
                 if (!response.ok) {
                     throw new Error('Failed to fetch orders');
                 }

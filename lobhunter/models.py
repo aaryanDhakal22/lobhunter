@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Order(models.Model):
-    email_id = models.CharField( max_length=20)
+    email_id = models.CharField(max_length=20)
     order_number = models.IntegerField(primary_key=True)
     customer_name = models.CharField(max_length=255)
     date = models.DateField()
@@ -13,15 +13,18 @@ class Order(models.Model):
     ticket = models.CharField(max_length=1000)
     address = models.CharField(max_length=30, null=True)
     time = models.TimeField(default="00:00:00")
+    blocked = models.BooleanField(default=False)
     status = models.CharField(max_length=10)
 
     def __str__(self):
         return f"Order {self.order_number} by {self.customer_name}"
 
+
 class PhoneBlockList(models.Model):
     phone = models.IntegerField()
-    reason = models.CharField(max_length=1000,default="")
+    reason = models.CharField(max_length=1000, default="")
+
+
 class AddressBlockList(models.Model):
     address = models.CharField(max_length=30)
-    reason = models.CharField(max_length=1000,default="")
-
+    reason = models.CharField(max_length=1000, default="")
