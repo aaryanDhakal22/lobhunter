@@ -2,8 +2,9 @@ from bs4 import BeautifulSoup
 
 from datetime import datetime
 
+
 def parser(html_content):
-    
+
     soup = BeautifulSoup(html_content, "html.parser")
 
     def safe_find_and_split(search_text, split_delimiter):
@@ -23,7 +24,6 @@ def parser(html_content):
     except ValueError:
         formatted_date = None  # Fallback in case the format doesn't match
 
-
     # Extract and format the time
     time_text = safe_find_and_split("Placed On:", " @ ")
     try:
@@ -31,7 +31,6 @@ def parser(html_content):
         formatted_time = time_object.strftime("%H:%M:%S")
     except ValueError:
         formatted_time = None
-
 
     # Check if topic mentions delivery
     topic = soup.find("h1")
@@ -43,7 +42,6 @@ def parser(html_content):
             street_text = street.get_text(strip=True).replace("Street:", "").strip()
             address = f"{street_text}"
             address = address.split(",")[0]
-
 
     # Extract details
     order_number = safe_find_and_split("Order#", "#")
@@ -70,5 +68,6 @@ def parser(html_content):
         "ticket": html_content,
         "address": address,
         "time": formatted_time,
-        "status" : "pending"
+        "status": "pending",
+        "blocked": False,
     }
