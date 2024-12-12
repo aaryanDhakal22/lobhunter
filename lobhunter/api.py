@@ -55,6 +55,8 @@ def order(request, order_id: int):
 
 @api.get("/order/date/{date}")
 def order_on_date(request, date: str):
-    order_data = Order.objects.filter(date=date).values()[0]
-
-    return order_data
+    order_data = Order.objects.filter(date=date).values()
+    payload = []
+    for order in order_data:
+        payload.append(order["email_id"])
+    return {"payload": payload}

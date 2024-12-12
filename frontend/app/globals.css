@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #3B4252;
   --primary : #2A982E;
   color: white;
+  background-color: #3B4252;
+}
+
+@layer base {
+  :root {
+    --radius : 0.5rem;
+  }
 }
 
