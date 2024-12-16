@@ -1,5 +1,6 @@
 from ninja import NinjaAPI
 
+from lobhunter.schemas import OrderResponse, OrderSchema, OrderPayloadSchema
 from .fetch import *
 from .models import Order, PhoneBlockList, AddressBlockList
 from pprint import pprint
@@ -53,19 +54,21 @@ def order(request, order_id: int):
     return order_data
 
 
-@api.get("/order/date/{date}")
+@api.get("/order/date/{date}", response=OrderResponse)
 def order_on_date(request, date: str):
     print(date)
-    order_data = Order.objects.filter(date=date).values()
-    payload = []
-    for order in order_data:
-        payload.append(
-            {
-                "order_number": order["order_number"],
-                "total": order["total"],
-                "customer_name": order["customer_name"],
-            }
+    order_data = Order.objects.filter(date=date).values(
+        "order_number", "total", "customer_name"
+    )
+    payload = [
+        OrderPayloadSchema(
+            order_number=["order_number"],
+            total= order["total"],
+            customer_name= order["customer_name"],
         )
+        for order in order_data
+    ]
+    
     return {
         "success": True,
         "message": "Orders retrieved successfully",

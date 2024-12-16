@@ -9,7 +9,7 @@ class OrderSchema(ModelSchema):
         fields = "__all__"
 
 
-class OrderSchema(Schema):
+class OrderPayloadSchema(Schema):
     order_number: str
     total: float
     customer_name: str

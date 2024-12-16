@@ -14,7 +14,7 @@ export default function Cfinder() {
     //             .then(res => res.json())
     // })
 
-    const query = useFetchData<OrderProps>(datesearch, `/api/order/date/${datesearch}`, {})
+    const query = useFetchData(datesearch, `/api/order/date/${datesearch}`, {})
     const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPriceToSearch(event.target.value)
     }
