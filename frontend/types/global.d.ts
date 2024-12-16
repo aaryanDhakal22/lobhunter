@@ -14,6 +14,11 @@ declare global {
 
 
     }
+    interface blocktile {
+        order_number: number,
+        total: string,
+        customer_name: string
+    }
 }
 
 export { }; // Ensures the file is treated as a module.
