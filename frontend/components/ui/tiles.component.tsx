@@ -5,11 +5,12 @@ interface TilesProps {
     order_number: number;
     customer_name: string;
     total: string;
+    onClick: () => void;
 }
 
-const Tiles: React.FC<TilesProps> = ({ order_number, customer_name, total }) => {
+const Tiles: React.FC<TilesProps> = ({ order_number, customer_name, total, onClick }) => {
     return (
-        <div className="p-3 m-2 rounded-lg outline outline-2 outline-green-600 grid grid-cols-3 ">
+        <div onClick={onClick} className=" cursor-pointer p-3 m-2 rounded-lg outline outline-2 outline-green-600 grid grid-cols-3 ">
             <div className="cursor-pointer">
                 <div className="text-xl text-green-500">Order No : {order_number}</div>
             </div>

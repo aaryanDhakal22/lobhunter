@@ -62,13 +62,13 @@ def order_on_date(request, date: str):
     )
     payload = [
         OrderPayloadSchema(
-            order_number=["order_number"],
-            total= order["total"],
-            customer_name= order["customer_name"],
+            order_number=order["order_number"],
+            total=order["total"],
+            customer_name=order["customer_name"],
         )
         for order in order_data
     ]
-    
+
     return {
         "success": True,
         "message": "Orders retrieved successfully",

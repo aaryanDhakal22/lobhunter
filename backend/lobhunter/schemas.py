@@ -10,7 +10,7 @@ class OrderSchema(ModelSchema):
 
 
 class OrderPayloadSchema(Schema):
-    order_number: str
+    order_number: int
     total: float
     customer_name: str
 
@@ -18,4 +18,4 @@ class OrderPayloadSchema(Schema):
 class OrderResponse(Schema):
     success: bool
     message: str
-    payload: List[OrderSchema]
+    payload: List[OrderPayloadSchema]

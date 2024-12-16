@@ -14,10 +14,16 @@ declare global {
 
 
     }
-    interface blocktile {
+    interface Blocktile {
         order_number: number,
         total: string,
         customer_name: string
+    }
+
+    interface ResponseApi {
+        success: string,
+        message: string,
+        payload: Blocktile[]
     }
 }
 

@@ -1,20 +1,16 @@
 'use client'
-import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import Tiles from "../ui/tiles.component"
 import { useFetchData } from "../hooks/dataFetch"
-
+import { handler } from "tailwindcss-animate"
+import OrderDetail from "../ui/orderDetail.component"
 export default function Cfinder() {
     const [datesearch, setDateSearch] = useState(new Date(Date.now() - 86400000).toISOString().split('T')[0])
     const [priceToSearch, setPriceToSearch] = useState('')
-    // const query = useQuery({
-    //     queryKey: ["cfinder", datesearch],
-    //     queryFn: () =>
-    //         fetch(`http://10.1.10.38:8000/api/order/date/${datesearch}`, { method: "GET" })
-    //             .then(res => res.json())
-    // })
+    const [selectedOrder, setSelectedOrder] = useState(0)
 
-    const query = useFetchData(datesearch, `/api/order/date/${datesearch}`, {})
+    const { isLoading, isError, isSuccess, data, error } = useFetchData<ResponseApi>(datesearch, `/api/order/date/${datesearch}`, {})
+
     const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPriceToSearch(event.target.value)
     }
@@ -22,17 +18,19 @@ export default function Cfinder() {
     const handleDate = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDateSearch(event.target.value)
     }
+    const handleSelectedOrder = (order_number: number) => {
+        setSelectedOrder(order_number)
+    }
 
-    if (query.isLoading) {
+    if (isLoading) {
         return <p>Loading orders...</p>
     }
-    if (query.isError) {
-        return <p>Error: {(query.error as Error).message}</p>
+    if (isError) {
+        return <p>Error: {(error as Error).message}</p>
     }
-    if (query.isSuccess) {
-        console.log(query.data)
-        const orders: OrderProps[] = query.data["payload"]
-        const filtered_orders: OrderProps[] = orders.filter((item) => {
+    if (isSuccess) {
+        const orders: Blocktile[] = data.payload
+        const filtered_orders: Blocktile[] = orders.filter((item) => {
             if (priceToSearch.length > 0) {
                 return item["total"].startsWith(priceToSearch)
             } else {
@@ -40,18 +38,26 @@ export default function Cfinder() {
             }
         })
         return (
-            < div className="text-black" >
-                <input type="date" name="date" onChange={handleDate} id="date" value={datesearch} />
-
+            (selectedOrder > 0) ? (
                 <div>
-                    <input type="text" placeholder="Price" value={priceToSearch} onChange={handlePrice} />
-                    <div>
-                        {filtered_orders.map((item: blocktile) => {
-                            return <Tiles key={item["order_number"]} order_number={item["order_number"]} customer_name={item["customer_name"]} total={item["total"]} />
-                        })}
-                    </div>
+
+                    <OrderDetail order_number={selectedOrder.toString()} onBack={() => handleSelectedOrder(0)} />
                 </div>
-            </ div>
+            ) : (
+                < div className="text-black"  >
+                    <input type="date" name="date" onChange={handleDate} id="date" value={datesearch} />
+
+                    <div>
+                        <input type="text" placeholder="Price" value={priceToSearch} onChange={handlePrice} />
+                        <div>
+                            {filtered_orders.map((item: Blocktile) => {
+                                return <Tiles onClick={() => handleSelectedOrder(item["order_number"])} key={item["order_number"]} order_number={item["order_number"]} customer_name={item["customer_name"]} total={item["total"]} />
+                            })}
+                        </div>
+                    </div>
+                </ div>
+            )
+
         )
     }
     return "Error"
