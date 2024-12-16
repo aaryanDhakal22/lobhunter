@@ -16,7 +16,7 @@
 
 @layer components {
   .btn {
-    @apply p-2 bg-green-600
+    @apply px-5 py-2 cursor-pointer rounded-sm active:scale-90 transition-all bg-green-600
   }
 
   .input-field {

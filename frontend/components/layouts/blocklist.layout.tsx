@@ -7,10 +7,13 @@ export default function BlockListTemplate() {
                     <form className="flex gap-4">
                         <input type="text" className="input-field" name="address" id="address" />
                         <input type="text" className="input-field" name="phone" id="phone" />
-                        <input type="submit" className="btn" value="Add" />
+                        <input type="button" className="btn" value="Add" />
+                        
                     </form>
+
                 </div>
             </div>
         </div>
     )
 }
+
