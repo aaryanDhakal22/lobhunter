@@ -3,22 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --primary : #2A982E;
+  --primary: #2A982E;
   color: white;
   background-color: #3B4252;
 }
 
 @layer base {
   :root {
-    --radius : 0.5rem;
+    --radius: 0.5rem;
   }
 }
 
-@layer components{
-  .btn{
+@layer components {
+  .btn {
     @apply p-2 bg-green-600
   }
-  .input-field{
+
+  .input-field {
     @apply p-4 rounded-md text-black text-xl
   }
 }

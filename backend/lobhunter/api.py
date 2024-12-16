@@ -66,4 +66,8 @@ def order_on_date(request, date: str):
                 "customer_name": order["customer_name"],
             }
         )
-    return {"payload": payload}
+    return {
+        "success": True,
+        "message": "Orders retrieved successfully",
+        "payload": payload,
+    }
