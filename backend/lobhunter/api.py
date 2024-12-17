@@ -1,3 +1,4 @@
+import google.auth.transport.requests
 from ninja import NinjaAPI
 
 from lobhunter.schemas import OrderResponse, OrderSchema, OrderPayloadSchema
@@ -12,11 +13,14 @@ api = NinjaAPI()
 
 @api.get("/sync")
 def sync_up(request):
+    print("Starting Syncronization")
     all_messages = fetcher()
+    print(f"Adding{len(all_messages)} to the database")
     # print("The messages received are " ,all_messages[0]["email_id"])
     blocked = 0
     if len(all_messages) > 0:
         for entry in all_messages:
+
             order = parser(entry["data"])
             print("\n\nThe order numer is ", order["order_number"])
 
@@ -74,3 +78,8 @@ def order_on_date(request, date: str):
         "message": "Orders retrieved successfully",
         "payload": payload,
     }
+
+
+@api.post("/blocklist/add")
+def add_to_blocklist(req, data):
+    print(data)

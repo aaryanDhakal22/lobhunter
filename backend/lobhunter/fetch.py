@@ -37,7 +37,7 @@ def fetcher():
     all_messages = []
     if not messages:
         return all_messages
-    for msg in messages:
+    for idx, msg in enumerate(messages):
         txt = service.users().messages().get(userId="me", id=msg["id"]).execute()
         email_id = txt["id"]
         payload = txt["payload"]
@@ -48,6 +48,8 @@ def fetcher():
         data = data.replace("-", "+").replace("_", "/")
         decoded_data = base64.b64decode(data).decode("utf-8")
         all_messages.append({"email_id": email_id, "data": decoded_data})
+        print(f"Added {idx} messages for commit")
         # Move the message to trash
         service.users().messages().trash(userId="me", id=email_id).execute()
+    print("Finished Sync")
     return all_messages if all_messages else []
