@@ -2,8 +2,8 @@
 import { useState } from "react"
 import Tiles from "../ui/tiles.component"
 import { useFetchData } from "../hooks/dataFetch"
-import { handler } from "tailwindcss-animate"
 import OrderDetail from "../ui/orderDetail.component"
+
 export default function Cfinder() {
     const [datesearch, setDateSearch] = useState(new Date(Date.now() - 86400000).toISOString().split('T')[0])
     const [priceToSearch, setPriceToSearch] = useState('')
@@ -32,7 +32,7 @@ export default function Cfinder() {
         const orders: Blocktile[] = data.payload
         const filtered_orders: Blocktile[] = orders.filter((item) => {
             if (priceToSearch.length > 0) {
-                return item["total"].startsWith(priceToSearch)
+                return item["total"].toString().startsWith(priceToSearch)
             } else {
                 return true
             }
@@ -45,10 +45,13 @@ export default function Cfinder() {
                 </div>
             ) : (
                 < div className="text-black"  >
-                    <input type="date" name="date" onChange={handleDate} id="date" value={datesearch} />
+                    <input type="date" name="date" className="text-2xl p-2 rounded-sm" onChange={handleDate} id="date" value={datesearch} />
 
                     <div>
-                        <input type="text" placeholder="Price" value={priceToSearch} onChange={handlePrice} />
+                        <div className="text-center">
+                            <span className="text-2xl text-green-500">$</span>
+                            <input type="text" placeholder="Price" className="p-1 text-2xl rounded-sm m-3" value={priceToSearch} onChange={handlePrice} />
+                        </div>
                         <div>
                             {filtered_orders.map((item: Blocktile) => {
                                 return <Tiles onClick={() => handleSelectedOrder(item["order_number"])} key={item["order_number"]} order_number={item["order_number"]} customer_name={item["customer_name"]} total={item["total"]} />

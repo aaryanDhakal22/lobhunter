@@ -1,7 +1,7 @@
 import google.auth.transport.requests
 from ninja import NinjaAPI
 
-from lobhunter.schemas import OrderResponse, OrderSchema, OrderPayloadSchema
+from lobhunter.schemas import OrderResponse, OrderSchema, OrderPayloadSchema, BlockList
 from .fetch import *
 from .models import Order, PhoneBlockList, AddressBlockList
 from pprint import pprint
@@ -80,6 +80,24 @@ def order_on_date(request, date: str):
     }
 
 
+@api.get("/blocklist/blocks", response=List[str])
+def all_blocks(request):
+    phones = [str(i.phone) for i in PhoneBlockList.objects.all()]
+    address = [str(i.address) for i in AddressBlockList.objects.all()]
+    blocks = phones + address
+    print(blocks)
+    return blocks
+
+
 @api.post("/blocklist/add")
-def add_to_blocklist(req, data):
-    print(data)
+def add_to_blocklist(request, data: BlockList):
+    message = ""
+    if len(data.phone) > 1:
+        PhoneBlockList.objects.create(data.phone)
+        message += "1 phone number was blocked \n"
+
+    if len(data.address) > 1:
+        AddressBlockList.objects.create(data.address)
+        message += "1 address was blocked \n"
+
+    return {"message": "Success"}

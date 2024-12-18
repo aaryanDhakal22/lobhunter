@@ -22,9 +22,9 @@ class Order(models.Model):
 
 class PhoneBlockList(models.Model):
     phone = models.IntegerField()
-    reason = models.CharField(max_length=1000, default="")
+    reason = models.CharField(max_length=1000, default="", blank=True)
 
 
 class AddressBlockList(models.Model):
     address = models.CharField(max_length=30)
-    reason = models.CharField(max_length=1000, default="")
+    reason = models.CharField(max_length=1000, default="", blank=True)

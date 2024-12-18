@@ -1,5 +1,6 @@
 import Cfinder from "@/components/layouts/cfinder.layout"
-import BlockListTemplate from "@/components/layouts/blocklist.layout"
+import BlockListAdd from "@/components/layouts/blockadd.layout"
+import BlockTable from "@/components/layouts/blocktable.layout"
 export default function BlockPage() {
     return (
         <div className="flex flex-row ">
@@ -8,7 +9,9 @@ export default function BlockPage() {
                 <Cfinder />
             </div>
             <div className="basis-1/2 ">
-                <BlockListTemplate />
+                <BlockListAdd />
+                <BlockTable />
+
             </div>
         </div>
     )

@@ -25,6 +25,19 @@ declare global {
         message: string,
         payload: Blocktile[]
     }
+    interface BlockAdd {
+        address: string,
+        phone: string
+    }
+    interface ApiResponse {
+        message: string; // Successful API response
+    }
+
+    interface ApiError {
+        message: string; // Error message
+        status?: number; // Optional status code
+    }
+
 }
 
 export { }; // Ensures the file is treated as a module.

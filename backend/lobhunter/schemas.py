@@ -19,3 +19,8 @@ class OrderResponse(Schema):
     success: bool
     message: str
     payload: List[OrderPayloadSchema]
+
+
+class BlockList(Schema):
+    address: str
+    phone: str
