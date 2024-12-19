@@ -24,3 +24,8 @@ class OrderResponse(Schema):
 class BlockList(Schema):
     address: str
     phone: str
+
+
+class StatusPayloadSchema(Schema):
+    order_number: str
+    status: str
