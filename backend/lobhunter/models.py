@@ -10,7 +10,7 @@ class Order(models.Model):
     phone = models.IntegerField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
     payment = models.CharField(max_length=5)
-    ticket = models.CharField(max_length=1000)
+    ticket = models.CharField(max_length=10000)
     address = models.CharField(max_length=30, null=True)
     time = models.TimeField(default="00:00:00")
     blocked = models.BooleanField(default=False)
