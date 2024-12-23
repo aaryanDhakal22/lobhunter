@@ -9,3 +9,4 @@ export const ReactQueryClientProvider = ({ children }: { children: React.ReactNo
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     )
 }
+export default queryClient

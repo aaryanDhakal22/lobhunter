@@ -6,12 +6,12 @@ export default function BlockListAdd() {
     const { register, handleSubmit, watch, formState: { errors }, } = useForm<BlockAdd>()
 
     // console.log(watch("address")) // watch input value by passing the name of it
-    
-    
+
+
 
 
     const onSubmit: SubmitHandler<BlockAdd> = async (data) => {
-        const response = await fetch("http://localhost:8000/api/blocklist/add", {
+        const response = await fetch("http://10.1.10.38:8000/api/blocklist/add", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

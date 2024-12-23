@@ -1,5 +1,7 @@
-import updateStatus from "../hooks/updateStatus"
+import { updateStatus } from "../hooks/updateStatus"
+import { Mutation, useMutation } from "@tanstack/react-query";
 
+import queryClient from '../ui/queryclientProvider'
 interface OrderViewProps {
     order_number: string;
     address: string;
@@ -7,10 +9,18 @@ interface OrderViewProps {
     changeClick: (id: string) => void;
 }
 
-const Order: React.FC<OrderViewProps> = ({ order_number, address, customer_name, changeClick }) => {
 
+const Order: React.FC<OrderViewProps> = ({ order_number, address, customer_name, changeClick }) => {
+    const mutation = useMutation({
+        mutationFn: (status: string) => {
+            return updateStatus(order_number, status)
+        }
+    },)
     const handleClick = (status: string) => {
-        const response = updateStatus(order_number, status)
+
+        const response = mutation.mutate(status)
+        
+        // console.log(status)
     }
     return (
 
