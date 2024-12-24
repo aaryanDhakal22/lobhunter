@@ -1,4 +1,6 @@
+import bs4
 from django.db import models
+from bs4 import BeautifulSoup
 
 
 # Create your models here.
@@ -18,6 +20,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.order_number} by {self.customer_name}"
+
 
 
 class PhoneBlockList(models.Model):

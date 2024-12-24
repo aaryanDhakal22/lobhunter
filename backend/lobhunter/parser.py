@@ -68,6 +68,6 @@ def parser(html_content):
         "ticket": html_content,
         "address": address,
         "time": formatted_time,
-        "status" : "pending",
-        "blocked": False
+        "status": "pending",
+        "blocked": False,
     }
