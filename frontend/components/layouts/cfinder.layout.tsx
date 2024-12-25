@@ -9,7 +9,7 @@ export default function Cfinder() {
     const [priceToSearch, setPriceToSearch] = useState('')
     const [selectedOrder, setSelectedOrder] = useState(0)
 
-    const { isLoading, isError, isSuccess, data, error } = useFetchData<ResponseApi>(datesearch, `/api/order/date/${datesearch}`, {})
+    const { isLoading, isError, isSuccess, data, error } = useFetchData<ResponseApi>(datesearch, `api/order/date/${datesearch}`, {})
 
     const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPriceToSearch(event.target.value)

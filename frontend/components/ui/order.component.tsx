@@ -8,10 +8,11 @@ interface OrderViewProps {
     customer_name: string;
     blocked: string;
     changeClick: (id: string) => void;
+    acceptHandler: (orderNumber: string) => void;
 }
 
 
-const Order: React.FC<OrderViewProps> = ({ order_number, blocked, address, customer_name, changeClick }) => {
+const Order: React.FC<OrderViewProps> = ({ order_number, blocked, address, customer_name, changeClick, acceptHandler }) => {
 
 
     const color: 'green' | 'red' = blocked ? 'red' : 'green'
@@ -22,9 +23,10 @@ const Order: React.FC<OrderViewProps> = ({ order_number, blocked, address, custo
         }
     },)
     const handleClick = (status: string) => {
-
+        if (status == "accepted") {
+            acceptHandler(order_number)
+        }
         const response = mutation.mutate(status)
-
     }
 
 

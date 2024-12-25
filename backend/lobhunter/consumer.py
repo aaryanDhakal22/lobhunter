@@ -9,6 +9,7 @@ class OrderConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.group_name = "kitchen_group"
+        print("\n\n", self.channel_name, " is connected")
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 

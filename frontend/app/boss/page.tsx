@@ -3,7 +3,7 @@ import OrdersPage from "@/components/layouts/orders.layout"
 export default function main() {
     return (
         <div className="flex flex-row ">
-
+            
             <div className="basis-2/3">
                 <OrdersPage />
             </div>

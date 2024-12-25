@@ -5,11 +5,14 @@ import OrderDetail from '../ui/orderDetail.component';
 import { useFetchData } from '../hooks/dataFetch';
 
 const OrdersPage: React.FC = () => {
+    
 
-    const { isLoading, isSuccess, isError, data } = useFetchData<OrderProps[]>('orders', "/api/orders")
+
+
+    const { isLoading, isSuccess, isError, data } = useFetchData<OrderProps[]>('orders', "api/orders")
 
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
-
+    
     const handleSelectedOrder = (id: string) => {
         setSelectedOrder(id);
     }
