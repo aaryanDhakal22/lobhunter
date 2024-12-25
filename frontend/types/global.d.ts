@@ -38,7 +38,10 @@ declare global {
         message: string; // Error message
         status?: number; // Optional status code
     }
-
+    interface KitchenTicket {
+        ticket: string,
+        name: string
+    }
 }
 
 export { }; // Ensures the file is treated as a module.

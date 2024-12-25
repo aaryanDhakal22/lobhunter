@@ -1,7 +1,7 @@
 let socket: WebSocket | null = null
 
 export const connectWebSocket = (
-    onMessage: (message: string) => void,
+    onMessage: (kitchenTicket: KitchenTicket) => void,
     onError?: (error: Error) => void
 ): WebSocket | undefined => {
     const primaryUrl = "10.1.10.38"
@@ -15,8 +15,8 @@ export const connectWebSocket = (
     socket = new WebSocket(WS_URL)
 
     socket.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-        onMessage(data.message)
+        const data: KitchenTicket = JSON.parse(event.data)
+        onMessage(data)
     }
 
     // Reconnect if WebSocket closes unexpectedly

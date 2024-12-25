@@ -10,7 +10,7 @@ interface OrderListProps {
 
 const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
     useEffect(() => {
-        const socket = connectWebSocket((incomingMessage: string) => {
+        const socket = connectWebSocket((kitchenTicket: KitchenTicket) => {
             return
         })
         return () => {

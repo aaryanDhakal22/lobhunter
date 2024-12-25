@@ -39,6 +39,12 @@ class OrderConsumer(AsyncWebsocketConsumer):
     async def broadcast_message(self, event):
         message = int(event["message"])
         order = await self.get_order(message)
+
         await self.send(
-            text_data=json.dumps({"message": self.kitchen_ticket(order.ticket)})
+            text_data=json.dumps(
+                {
+                    "ticket": self.kitchen_ticket(order.ticket),
+                    "name": order.customer_name,
+                }
+            )
         )
