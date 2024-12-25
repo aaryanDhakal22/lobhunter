@@ -42,6 +42,9 @@ declare global {
         ticket: string,
         name: string
     }
+    interface KitchenOrder extends KitchenTicket {
+        id: string;
+    }
 }
 
 export { }; // Ensures the file is treated as a module.

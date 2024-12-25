@@ -1,5 +1,6 @@
 'use client'
 import { connectWebSocket, sendMessage } from "@/components/hooks/websocket"
+import KitchenOrder from "@/components/ui/kitchenOrder";
 import React, { useEffect, useState } from 'react'
 
 interface KitchenOrder extends KitchenTicket {
@@ -22,9 +23,9 @@ const OrderList: React.FC = () => {
 
     return (
         <div className="p-4">
-            <div className="flex gap-5 ">
+            <div className="flex gap-5 items-start ">
                 {orders.map((item: KitchenOrder) => {
-                    return <div className='bg-white inline text-black p-6 rounded-md' dangerouslySetInnerHTML={{ __html: item.ticket }} key={item.id}></div>
+                    return <KitchenOrder key={item.id} item={item} />
                 })}
             </div>
         </div>

@@ -25,7 +25,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
 
 
     const filtered_orders = orders.filter((item) => {
-        return item.status == "pending";
+        return item.status == "pending" && item.payment == "Card";
     });
     filtered_orders.sort((a, b) => {
         const dateObject1 = new Date(a.date + ' ' + a.time)
