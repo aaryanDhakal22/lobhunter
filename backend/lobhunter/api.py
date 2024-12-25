@@ -37,7 +37,9 @@ def sync_up(request):
                 blocked += 1
 
             # check if address is in block list
-            elif AddressBlockList.objects.filter(address=order["address"]).exists():
+            elif AddressBlockList.objects.filter(
+                address=order["address"].upper()
+            ).exists():
                 print("Address in block list")
                 order["blocked"] = True
                 blocked += 1
@@ -106,7 +108,7 @@ def add_to_blocklist(request, data: BlockList):
         message += "1 phone number was blocked \n"
 
     if len(data.address) > 1:
-        AddressBlockList.objects.create(address=data.address)
+        AddressBlockList.objects.create(address=data.address.upper())
         message += "1 address was blocked \n"
 
     return {"message": message}

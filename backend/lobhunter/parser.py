@@ -66,7 +66,7 @@ def parser(html_content):
         "total": order_total,
         "payment": payment_type,
         "ticket": html_content,
-        "address": address,
+        "address": address if address != None else "",
         "time": formatted_time,
         "status": "pending",
         "blocked": False,

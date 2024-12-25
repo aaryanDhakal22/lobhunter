@@ -7,7 +7,7 @@ import queryClient from "./queryclientProvider";
 export default function Syncup() {
     // const primaryUrl = "10.1.10.38"
     const primaryUrl = "localhost"
-    const { isLoading, error, isSuccess, data, isFetching } = useQuery({
+    const { isLoading, error, isSuccess, data, isFetching, isError } = useQuery({
         queryKey: ["sync"],
         queryFn: async () => {
             const response = await axios.get("http://localhost:8000/api/sync")
@@ -26,10 +26,15 @@ export default function Syncup() {
         </button>
     }
     if (isSuccess) {
+        queryClient.invalidateQueries({ queryKey: ['orders'] })
 
         return (
             <button onClick={handleSync} className="bg-green-500 rounded-md inline-block text-xl py-3 px-4">📩Sync</button>
         )
     }
-    return <div>Error Occured</div>
+    if (isError) {
+        return (
+            <button onClick={handleSync} className="bg-red-500 rounded-md inline-block text-xl py-3 px-4">Error Sync</button>
+        )
+    }
 }
