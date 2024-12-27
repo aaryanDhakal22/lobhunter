@@ -12,10 +12,10 @@ const OrderList: React.FC = () => {
 
     useEffect(() => {
         const socket = connectWebSocket((kitchenTicket) => {
-            const newOrder: KitchenOrder = { id: Date.now().toString(), name: kitchenTicket.name, ticket: kitchenTicket.ticket };
+            const newOrder: KitchenOrder = { id: Date.now().toString(), kitchenNumber: kitchenTicket.kitchenNumber, ticket: kitchenTicket.ticket };
             setOrders((prevOrders) => [...prevOrders, newOrder]);
-            const audio = new Audio('/audio/bell.wav')
-            audio.play()
+            // const audio = new Audio('/audio/bell.wav')
+            // audio.play()
         })
         return () => {
             if (socket) socket?.close

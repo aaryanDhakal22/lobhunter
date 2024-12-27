@@ -1,6 +1,56 @@
 from bs4 import BeautifulSoup
+from .models import OperationDate
+from datetime import datetime, timedelta
+import pytz
 
-from datetime import datetime
+diff = {
+    "sunday": 13.5,
+    "monday": 15,
+    "tuesday": 15,
+    "wednesday": 15,
+    "thursday": 15,
+    "friday": 16,
+    "saturday": 16,
+}
+
+
+def operational_start():
+    today = datetime.now(pytz.utc).astimezone(pytz.timezone("US/Eastern"))
+    print("today day", today.strftime("%A"))    
+    minute = 0
+    if today.strftime("%A") == "Sunday":
+        minute = 30
+    today_open = datetime(today.year, today.month, today.day, hour=10, minute=minute)
+    print("Today open", today_open)
+    today_open = today_open.astimezone(pytz.timezone("US/Eastern"))
+    print("Today open after timezone aware", today_open)
+    return today_open
+
+
+def kitchen_ticket_number():
+    if not OperationDate.objects.first():
+
+        OperationDate.objects.create(date=operational_start(), counter=1600)
+    # the last date saved
+    prev_op_date = OperationDate.objects.first()
+    prev_date = prev_op_date.date
+    # timezone aware now
+    now_utc = datetime.now(pytz.utc)
+    eastern = pytz.timezone("US/Eastern")
+    now_date = now_utc.astimezone(eastern)
+    prev_date = prev_date.astimezone(eastern)
+    now_day = datetime.now().strftime("%A")
+    print(now_date, prev_date, diff[now_day.lower()], now_date - prev_date)
+    if now_date - prev_date <= timedelta(hours=diff[now_day.lower()]):
+        print("Today")
+        prev_op_date.counter += 1
+        prev_op_date.save()
+        return prev_op_date.counter
+    else:
+        print("Set new day")
+        OperationDate.objects.first().delete()
+        OperationDate.objects.create(date=operational_start(), counter=1600)
+        return 1600
 
 
 def parser(html_content):
@@ -70,4 +120,5 @@ def parser(html_content):
         "time": formatted_time,
         "status": "pending",
         "blocked": False,
+        "kitchen_number": kitchen_ticket_number(),
     }

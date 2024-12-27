@@ -12,6 +12,7 @@ declare global {
         address?: string; // Corresponds to CharField(max_length=30, null=True), optional in TypeScript
         time: string; // Corresponds to TimeField(default="00:00:00"), represented as a string (e.g., 'HH:mm:ss')
         status: string; // Corresponds to CharField(max_length=10)
+        kitchen_number: number; // Corresponds to CharField(max_length=255)
 
 
     }
@@ -40,7 +41,7 @@ declare global {
     }
     interface KitchenTicket {
         ticket: string,
-        name: string
+        kitchenNumber: number
     }
     interface KitchenOrder extends KitchenTicket {
         id: string;

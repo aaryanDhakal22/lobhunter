@@ -1,11 +1,12 @@
-import bs4
 from django.db import models
-from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
 
 
 # Create your models here.
 class Order(models.Model):
     email_id = models.CharField(max_length=20)
+    kitchen_number = models.IntegerField()
     order_number = models.IntegerField(primary_key=True)
     customer_name = models.CharField(max_length=255)
     date = models.DateField()
@@ -21,6 +22,17 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.order_number} by {self.customer_name}"
 
+
+class OperationDate(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateTimeField()
+    counter = models.IntegerField()
+    # @property
+    # def now_date_and_time(self):
+    #     now_utc = datetime.now(pytz.utc)
+    #     eastern = pytz.timezone("US/Eastern")
+    #     now_est = now_utc.astimezone(eastern)
+    #     return now_est.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class PhoneBlockList(models.Model):

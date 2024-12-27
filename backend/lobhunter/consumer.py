@@ -1,5 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from lobhunter.parser import kitchen_ticket_number
 from .models import Order
 from channels.db import database_sync_to_async
 from bs4 import BeautifulSoup
@@ -39,12 +40,11 @@ class OrderConsumer(AsyncWebsocketConsumer):
     async def broadcast_message(self, event):
         message = int(event["message"])
         order = await self.get_order(message)
-
         await self.send(
             text_data=json.dumps(
                 {
                     "ticket": self.kitchen_ticket(order.ticket),
-                    "name": order.customer_name,
+                    "kitchenNumber": order.kitchen_number,
                 }
             )
         )
