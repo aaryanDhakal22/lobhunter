@@ -1,11 +1,9 @@
 'use client'
-import React, { useState, useEffect } from 'react';
-import OrderList from './orderList.layout';
-import OrderDetail from '../ui/orderDetail.component';
-import { useFetchData } from '../hooks/dataFetch';
-
-const OrdersPage: React.FC = () => {
-
+import { useFetchData } from "@/components/hooks/dataFetch"
+import Order from "@/components/ui/order.component"
+import OrderDetail from "@/components/ui/orderDetail.component"
+import { useState } from "react"
+export default function PastOrders() {
 
 
 
@@ -24,17 +22,27 @@ const OrdersPage: React.FC = () => {
         return <div>Error Detected</div>
     }
     if (isSuccess) {
-
+        data.sort((a, b) => {
+            const dateObject1 = new Date(a.date + ' ' + a.time)
+            const dateObject2 = new Date(b.date + ' ' + b.time)
+            return dateObject2.getTime() - dateObject1.getTime()
+        })
 
         return (
             <div className="container mx-auto p-4">
                 {selectedOrder === null ? (
-                    <div className='transition-transform duration-500 ease-in-out transform scale-100' key="order-list">
+                    <div className='' >
 
-                        <OrderList
-                            orders={data}
-                            onSelectOrder={handleSelectedOrder}
-                        />
+                        <div className=" p-10">
+                            <div className="text-center text-3xl mb-10">PAST ORDERS</div>
+                            <div className="flex h-screen flex-col">
+
+                                {data.map((order: any) => (
+                                    <Order key={order.email_id} order={order} changeClick={handleSelectedOrder} >
+                                    </Order>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <div className="transition-transform duration-500 ease-in-out transform scale-100 p-5"
@@ -54,5 +62,3 @@ const OrdersPage: React.FC = () => {
         );
     }
 };
-
-export default OrdersPage;

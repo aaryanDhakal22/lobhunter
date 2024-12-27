@@ -2,7 +2,6 @@
 import { connectWebSocket, sendMessage } from "@/components/hooks/websocket"
 import KitchenOrder from "@/components/ui/kitchenOrder";
 import React, { useEffect, useState } from 'react'
-
 interface KitchenOrder extends KitchenTicket {
     id: string;
 }
@@ -15,6 +14,8 @@ const OrderList: React.FC = () => {
         const socket = connectWebSocket((kitchenTicket) => {
             const newOrder: KitchenOrder = { id: Date.now().toString(), name: kitchenTicket.name, ticket: kitchenTicket.ticket };
             setOrders((prevOrders) => [...prevOrders, newOrder]);
+            const audio = new Audio('/audio/bell.wav')
+            audio.play()
         })
         return () => {
             if (socket) socket?.close

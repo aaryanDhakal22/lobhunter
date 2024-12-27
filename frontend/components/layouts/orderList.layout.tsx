@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Order from "../ui/order.component";
 import { connectWebSocket, sendMessage } from "../hooks/websocket";
-
+import StatusButtons from "./statusButtons.layout";
 interface OrderListProps {
     orders: OrderProps[];
     onSelectOrder: (id: string) => void;
@@ -18,9 +18,6 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
         }
     }, [])
 
-    const handleAccept = (order_number: string) => {
-        sendMessage(order_number)
-    }
 
 
 
@@ -38,7 +35,9 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
             <div className="flex h-screen flex-col">
 
                 {filtered_orders.map((order: any) => (
-                    <Order key={order.email_id} acceptHandler={handleAccept} blocked={order.blocked} order_number={order.order_number} address={order.address} customer_name={order.customer_name} changeClick={onSelectOrder} />
+                    <Order key={order.email_id} order={order} changeClick={onSelectOrder} >
+                        <StatusButtons order_number={order.order_number} sendMessage={sendMessage} />
+                    </Order>
                 ))}
             </div>
         </div>

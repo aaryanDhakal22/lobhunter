@@ -5,14 +5,15 @@ import axios from "axios";
 import queryClient from "./queryclientProvider";
 
 export default function Syncup() {
-    // const primaryUrl = "10.1.10.38"
-    const primaryUrl = "localhost"
+    const primaryUrl = "10.1.10.38"
+    // const primaryUrl = "localhost"
     const { isLoading, error, isSuccess, data, isFetching, isError } = useQuery({
         queryKey: ["sync"],
         queryFn: async () => {
-            const response = await axios.get("http://localhost:8000/api/sync")
+            const response = await axios.get(`http://${primaryUrl}:8000/api/sync`)
             return response
-        }
+        },
+        refetchOnWindowFocus: false
     })
     const handleSync = () => {
         queryClient.invalidateQueries({ queryKey: ['sync'] })

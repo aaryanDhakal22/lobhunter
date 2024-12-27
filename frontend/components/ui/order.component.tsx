@@ -2,33 +2,19 @@ import { updateStatus } from "../hooks/updateStatus"
 import { Mutation, useMutation } from "@tanstack/react-query";
 import { use, useState } from "react";
 import queryClient from '../ui/queryclientProvider'
+import StatusButtons from "../layouts/statusButtons.layout";
 interface OrderViewProps {
     order_number: string;
     address: string;
     customer_name: string;
     blocked: string;
-    changeClick: (id: string) => void;
-    acceptHandler: (orderNumber: string) => void;
 }
 
 
-const Order: React.FC<OrderViewProps> = ({ order_number, blocked, address, customer_name, changeClick, acceptHandler }) => {
-
+export default function Order({ order, changeClick, children }: { order: OrderViewProps, changeClick: (id: string) => void, children?: any }) {
+    const { blocked, order_number, customer_name, address } = { ...order }
 
     const color: 'green' | 'red' = blocked ? 'red' : 'green'
-
-    const mutation = useMutation({
-        mutationFn: (status: string) => {
-            return updateStatus(order_number, status)
-        }
-    },)
-    const handleClick = (status: string) => {
-        if (status == "accepted") {
-            acceptHandler(order_number)
-        }
-        const response = mutation.mutate(status)
-    }
-
 
 
     return (
@@ -52,13 +38,8 @@ const Order: React.FC<OrderViewProps> = ({ order_number, blocked, address, custo
                 )}
 
             </div>
-            <div className="grid grid-cols-3 p-4 gap-4">
-                <button onClick={() => { handleClick("accepted") }} className="bg-green-500 p-3 rounded-lg">Accept</button>
-                <button onClick={() => { handleClick("rejected") }} className="bg-red-500 p-3 rounded-lg">Reject</button>
-                <button onClick={() => { handleClick("dismissed") }} className="bg-slate-500 p-3 rounded-lg">Dismiss</button>
-            </div>
+
+            {children}
         </div >
     );
 };
-
-export default Order;

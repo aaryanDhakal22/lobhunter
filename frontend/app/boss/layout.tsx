@@ -17,6 +17,10 @@ export default function BossLayout({
                 </div>
                 <div className="mb-10 text-7xl text-center ">Nylon<span className="text-green-500">P0S</span></div>
                 <div className="">
+
+                    <Link href="/boss/past" className="inline-block">
+                        <button className="bg-green-500 py-3 px-4 rounded-md text-xl mr-5 ">Past Order</button>
+                    </Link>
                     <Link href="/boss/blocklist" className="inline-block">
                         <button className="bg-red-500 py-3 px-4 rounded-md text-xl mr-5 ">BlockList</button>
                     </Link>
