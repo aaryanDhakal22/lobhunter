@@ -10,11 +10,11 @@ interface OrderListProps {
 
 const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
     useEffect(() => {
-        const socket = connectWebSocket((kitchenTicket: KitchenTicket) => {
+        const socket = connectWebSocket(() => {
             return
         })
         return () => {
-            if (socket) socket?.close
+            if (socket) socket?.close()
         }
     }, [])
 
@@ -34,9 +34,9 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onSelectOrder }) => {
             <div className="text-center text-3xl mb-10">ORDERS</div>
             <div className="flex h-screen flex-col">
 
-                {filtered_orders.map((order: any) => (
+                {filtered_orders.map((order: OrderProps) => (
                     <Order key={order.email_id} order={order} changeClick={onSelectOrder} >
-                        <StatusButtons order_number={order.order_number} sendMessage={sendMessage} />
+                        <StatusButtons order_number={order.order_number.toString()} sendMessage={sendMessage} />
                     </Order>
                 ))}
             </div>

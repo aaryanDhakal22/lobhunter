@@ -1,5 +1,5 @@
 'use client'
-import { connectWebSocket, sendMessage } from "@/components/hooks/websocket"
+import { connectWebSocket } from "@/components/hooks/websocket"
 import KitchenOrder from "@/components/ui/kitchenOrder";
 import React, { useEffect, useState } from 'react'
 interface KitchenOrder extends KitchenTicket {
@@ -18,7 +18,7 @@ const OrderList: React.FC = () => {
             // audio.play()
         })
         return () => {
-            if (socket) socket?.close
+            if (socket) socket?.close()
         }
     }, [])
 

@@ -1,4 +1,4 @@
-import OrderList from "@/components/layouts/orderList.layout"
+
 import OrdersPage from "@/components/layouts/orders.layout"
 export default function main() {
     return (

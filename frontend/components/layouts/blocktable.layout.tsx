@@ -5,6 +5,9 @@ export default function BlockTable() {
     if (isLoading) {
         return <p>Loading...</p>
     }
+    if (isError) {
+        return <p>Error: {(error as Error).message}</p>
+    }
     if (isSuccess) {
         return (
             <div>
@@ -14,5 +17,4 @@ export default function BlockTable() {
             </div>
         )
     }
-    return <p>Error: {(error as Error).message}</p>
 }  

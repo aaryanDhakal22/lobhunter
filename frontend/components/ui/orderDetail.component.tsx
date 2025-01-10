@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useFetchData } from '../hooks/dataFetch';
 type OrderDetailProps = {
   order_number: string;

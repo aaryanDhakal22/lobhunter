@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
 import OrderList from './orderList.layout';
 import OrderDetail from '../ui/orderDetail.component';
 import { useFetchData } from '../hooks/dataFetch';

@@ -37,7 +37,7 @@ export default function PastOrders() {
                             <div className="text-center text-3xl mb-10">PAST ORDERS</div>
                             <div className="flex h-screen flex-col">
 
-                                {data.map((order: any) => (
+                                {data.map((order: OrderProps) => (
                                     <Order key={order.email_id} order={order} changeClick={handleSelectedOrder} >
                                     </Order>
                                 ))}

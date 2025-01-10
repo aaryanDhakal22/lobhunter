@@ -13,7 +13,7 @@ export default function StatusButtons({ order_number, sendMessage }: { order_num
         if (status == "accepted") {
             sendMessage(order_number)
         }
-        const response = mutation.mutate(status)
+        mutation.mutate(status)
     }
     return (
         <div className="grid grid-cols-3 p-4 gap-4">

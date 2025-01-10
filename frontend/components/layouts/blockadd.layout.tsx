@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 
 
 export default function BlockListAdd() {
-    const { register, handleSubmit, watch, formState: { errors }, } = useForm<BlockAdd>()
+    const { register, handleSubmit } = useForm<BlockAdd>()
 
     // console.log(watch("address")) // watch input value by passing the name of it
 
@@ -18,6 +18,7 @@ export default function BlockListAdd() {
                 "Content-type": "application/json"
             }
         })
+        console.log(response.status)
 
 
     }

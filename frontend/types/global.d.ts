@@ -10,6 +10,7 @@ declare global {
         ticket: string; // Corresponds to CharField(max_length=1000)
         kitchenTicket: string; // Corresponds to CharField(max_length=1000)
         address?: string; // Corresponds to CharField(max_length=30, null=True), optional in TypeScript
+        blocked: string;
         time: string; // Corresponds to TimeField(default="00:00:00"), represented as a string (e.g., 'HH:mm:ss')
         status: string; // Corresponds to CharField(max_length=10)
         kitchen_number: number; // Corresponds to CharField(max_length=255)
@@ -45,6 +46,12 @@ declare global {
     }
     interface KitchenOrder extends KitchenTicket {
         id: string;
+    }
+    interface OrderViewProps {
+        order_number: string;
+        address: string;
+        customer_name: string;
+        blocked: string;
     }
 }
 

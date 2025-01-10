@@ -7,7 +7,7 @@ import queryClient from "./queryclientProvider";
 export default function Syncup() {
     const primaryUrl = "10.1.10.38"
     // const primaryUrl = "localhost"
-    const { isLoading, error, isSuccess, data, isFetching, isError } = useQuery({
+    const { isLoading, isSuccess, isFetching, isError } = useQuery({
         queryKey: ["sync"],
         queryFn: async () => {
             const response = await axios.get(`http://${primaryUrl}:8000/api/sync`)
