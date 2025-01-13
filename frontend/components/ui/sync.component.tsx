@@ -1,12 +1,10 @@
 'use client'
-
+import primaryUrl from "@/ports/ports";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import queryClient from "./queryclientProvider";
 
 export default function Syncup() {
-    const primaryUrl = "10.1.10.38"
-    // const primaryUrl = "localhost"
     const { isLoading, isSuccess, isFetching, isError } = useQuery({
         queryKey: ["sync"],
         queryFn: async () => {

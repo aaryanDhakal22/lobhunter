@@ -1,11 +1,9 @@
 let socket: WebSocket | null = null
-
+import primaryUrl from "@/ports/ports";
 export const connectWebSocket = (
     onMessage: (kitchenTicket: KitchenTicket) => void,
     onError?: (error: Error) => void
 ): WebSocket | undefined => {
-    const primaryUrl = "10.1.10.38"
-    // const primaryUrl = "localhost"
     const WS_URL = `ws://${primaryUrl}:8000/ws/orders/`
 
     if (socket && socket.readyState === WebSocket.OPEN) {

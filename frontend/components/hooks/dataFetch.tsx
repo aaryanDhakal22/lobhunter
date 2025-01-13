@@ -1,12 +1,10 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-
+import primaryUrl from "@/ports/ports";
 export function useFetchData<TData>(myqueryKey: string, url: string, options?: {
     fetchOption?: RequestInit;
     reactQueryOption?: Omit<UseQueryOptions<TData, Error>, 'queryKey' | 'queryFn'>
 }
 ): UseQueryResult<TData, Error> {
-    const primaryUrl = "10.1.10.38"
-    // const primaryUrl = "localhost"
     return useQuery<TData, Error>({
         queryKey: [myqueryKey],
         queryFn: async (): Promise<TData> => {
