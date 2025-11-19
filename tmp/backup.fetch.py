@@ -50,42 +50,72 @@ def authenticate_gmail():
     return creds
 
 
-def fetcher():
+def backup_fetch():
+    """Original fetcher function - kept as backup"""
     creds = authenticate_gmail()
     service = build("gmail", "v1", credentials=creds)
     result = service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
     messages = result.get("messages")
-    pprint(messages)
     all_messages = []
     if not messages:
         return all_messages
     for idx, msg in enumerate(messages):
         txt = service.users().messages().get(userId="me", id=msg["id"]).execute()
-        pprint(txt)
-
         email_id = txt["id"]
-        pprint(email_id)
         payload = txt["payload"]
-        pprint(payload)
-        # pprint(payload["body"])
+        pprint(payload["body"])
         if int(payload["body"]["size"]) == 0:
             continue
         data = payload["body"]["data"]
-        pprint(data)
         data = data.replace("-", "+").replace("_", "/")
         decoded_data = base64.b64decode(data).decode("utf-8")
         all_messages.append({"email_id": email_id, "data": decoded_data})
-        pprint(f"Added {idx} messages for commit")
+        print(f"Added {idx} messages for commit")
         # Move the message to trash
         service.users().messages().trash(userId="me", id=email_id).execute()
-    pprint("Finished Sync")
+    print("Finished Sync")
     return all_messages if all_messages else []
 
 
-if __name__ == "__main__":
-    all_messages = fetcher()
-    with open("all_messages.json", "w") as f:
-        f.write(str(all_messages))
+def fetcher():
+    creds = authenticate_gmail()
+    service = build("gmail", "v1", credentials=creds)
+    result = service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
+    messages = result.get("messages")
+    all_messages = []
+    if not messages:
+        return all_messages
+    for idx, msg in enumerate(messages):
+        txt = service.users().messages().get(userId="me", id=msg["id"]).execute()
+        email_id = txt["id"]
+        payload = txt["payload"]
+        decoded_data = None
 
-    pprint(all_messages)
-    pprint(len(all_messages))
+        # Handle multipart messages (most emails)
+        if "parts" in payload:
+            # Iterate through parts to find text content
+            for part in payload["parts"]:
+                if part["mimeType"] in ["text/plain", "text/html"]:
+                    if "data" in part["body"]:
+                        data = part["body"]["data"]
+                        data = data.replace("-", "+").replace("_", "/")
+                        decoded_data = base64.b64decode(data).decode("utf-8")
+                        break
+        else:
+            # Handle simple messages (content directly in body)
+            if int(payload["body"]["size"]) > 0:
+                data = payload["body"]["data"]
+                data = data.replace("-", "+").replace("_", "/")
+                decoded_data = base64.b64decode(data).decode("utf-8")
+
+        # Only add if we successfully decoded data
+        if decoded_data:
+            all_messages.append({"email_id": email_id, "data": decoded_data})
+            print(f"Added message {idx + 1}")
+            # Move the message to trash
+            service.users().messages().trash(userId="me", id=email_id).execute()
+        else:
+            print(f"Skipped message {idx + 1} - no decodable content found")
+
+    print(f"Finished Sync - processed {len(all_messages)} messages")
+    return all_messages if all_messages else []

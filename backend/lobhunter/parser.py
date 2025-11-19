@@ -1,7 +1,9 @@
-from bs4 import BeautifulSoup
-from .models import OperationDate
 from datetime import datetime, timedelta
+
 import pytz
+from bs4 import BeautifulSoup
+
+from .models import OperationDate
 
 diff = {
     "sunday": 13.5,
@@ -16,7 +18,7 @@ diff = {
 
 def operational_start():
     today = datetime.now(pytz.utc).astimezone(pytz.timezone("US/Eastern"))
-    print("today day", today.strftime("%A"))    
+    print("today day", today.strftime("%A"))
     minute = 0
     if today.strftime("%A") == "Sunday":
         minute = 30
@@ -120,5 +122,7 @@ def parser(html_content):
         "time": formatted_time,
         "status": "pending",
         "blocked": False,
-        "kitchen_number": kitchen_ticket_number(),
+        # TODO: Re-enable kitchen ticket number after fixing overflow issue
+        # "kitchen_number": kitchen_ticket_number(),  # Temporarily disabled due to integer overflow
+        "kitchen_number": 1,  # Temporary default value
     }

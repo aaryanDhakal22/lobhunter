@@ -1,16 +1,17 @@
-from django.db import models
 from datetime import datetime
+
 import pytz
+from django.db import models
 
 
 # Create your models here.
 class Order(models.Model):
     email_id = models.CharField(max_length=20)
-    kitchen_number = models.IntegerField()
-    order_number = models.IntegerField(primary_key=True)
+    kitchen_number = models.BigIntegerField(help_text="Kitchen ticket number - changed to BigIntegerField to handle large numbers")
+    order_number = models.BigIntegerField(primary_key=True)
     customer_name = models.CharField(max_length=255)
     date = models.DateField()
-    phone = models.IntegerField()
+    phone = models.BigIntegerField(help_text="Phone number - changed to BigIntegerField to handle large phone numbers")
     total = models.DecimalField(max_digits=10, decimal_places=2)
     payment = models.CharField(max_length=5)
     ticket = models.CharField(max_length=10000)
@@ -36,7 +37,7 @@ class OperationDate(models.Model):
 
 
 class PhoneBlockList(models.Model):
-    phone = models.IntegerField()
+    phone = models.BigIntegerField(help_text="Phone number - changed to BigIntegerField to handle large phone numbers")
     reason = models.CharField(max_length=1000, default="", blank=True)
 
 
