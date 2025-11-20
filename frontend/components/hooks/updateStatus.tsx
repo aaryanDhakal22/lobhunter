@@ -8,7 +8,7 @@ export async function updateStatus(orderNumber: string, status: string) {
         "status": status
     }
     // console.log(payload)
-    const response = await axios.put(`http://${primaryUrl}:8000/api/order/status/`, payload).then(response => {
+    const response = await axios.put(`https://${primaryUrl}/api/order/status/`, payload).then(response => {
         // console.log(response.data)
         queryClient.invalidateQueries({ queryKey: ['orders'] })
         return response.data

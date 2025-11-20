@@ -41,26 +41,26 @@ quick: start ## ⚡ Quick start (without building)
 
 build: ## 🔨 Build all Docker containers
 	@echo "$(YELLOW)🔨 Building Docker containers...$(NC)"
-	@docker-compose build
+	@podman compose build
 
 build-no-cache: ## 🔨 Build containers without cache
 	@echo "$(YELLOW)🔨 Building containers without cache...$(NC)"
-	@docker-compose build --no-cache
+	@podman compose build --no-cache
 
 start: ## ▶️  Start all services
 	@echo "$(GREEN)▶️  Starting all services...$(NC)"
-	@docker-compose up -d
+	@podman compose up -d
 	@echo "$(GREEN)✅ All services started!$(NC)"
 
 stop: ## ⏹️  Stop all services
 	@echo "$(RED)⏹️  Stopping all services...$(NC)"
-	@docker-compose down
+	@podman compose down
 
 restart: stop start ## 🔄 Restart all services
 
 clean: ## 🧹 Stop services and remove containers, networks, volumes
 	@echo "$(RED)🧹 Cleaning up Docker resources...$(NC)"
-	@docker-compose down -v --remove-orphans
+	@podman compose down -v --remove-orphans
 	@docker system prune -f
 
 reset: clean build start ## 🔄 Complete reset: clean, build, start
@@ -68,27 +68,27 @@ reset: clean build start ## 🔄 Complete reset: clean, build, start
 ##@ 📊 Monitoring & Logs
 
 logs: ## 📋 View logs for all services
-	@docker-compose logs -f
+	@podman compose logs -f
 
 logs-backend: ## 📋 View backend logs only
-	@docker-compose logs -f backend
+	@podman compose logs -f backend
 
 logs-frontend: ## 📋 View frontend logs only
-	@docker-compose logs -f frontend
+	@podman compose logs -f frontend
 
 logs-db: ## 📋 View database logs only
-	@docker-compose logs -f db
+	@podman compose logs -f db
 
 logs-cache: ## 📋 View Redis cache logs only
-	@docker-compose logs -f cache
+	@podman compose logs -f cache
 
 status: ## 📊 Show status of all services
 	@echo "$(CYAN)📊 Service Status:$(NC)"
-	@docker-compose ps
+	@podman compose ps
 
 health: ## 🔍 Check health of all services
 	@echo "$(CYAN)🔍 Health Check:$(NC)"
-	@docker-compose ps
+	@podman compose ps
 	@echo ""
 	@echo "$(CYAN)Backend API:$(NC)"
 	@curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/api/orders && echo " ✅ Backend API responding" || echo " ❌ Backend API not responding"
@@ -99,32 +99,32 @@ health: ## 🔍 Check health of all services
 
 db-migrate: ## 🗄️ Run database migrations
 	@echo "$(BLUE)🗄️ Running database migrations...$(NC)"
-	@docker-compose exec backend python manage.py migrate
+	@podman compose exec backend python manage.py migrate
 
 db-makemigrations: ## 🗄️ Create new database migrations
 	@echo "$(BLUE)🗄️ Creating new migrations...$(NC)"
-	@docker-compose exec backend python manage.py makemigrations
+	@podman compose exec backend python manage.py makemigrations
 
 db-shell: ## 🗄️ Open database shell
 	@echo "$(BLUE)🗄️ Opening database shell...$(NC)"
-	@docker-compose exec db psql -U postgres -d postgres
+	@podman compose exec db psql -U postgres -d postgres
 
 db-reset: ## 🗄️ Reset database (WARNING: This will delete all data)
 	@echo "$(RED)⚠️  WARNING: This will delete ALL database data!$(NC)"
 	@read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
-	@docker-compose down
+	@podman compose down
 	@docker volume rm lobhunter_db 2>/dev/null || true
-	@docker-compose up -d db cache
+	@podman compose up -d db cache
 	@sleep 5
-	@docker-compose up -d backend
+	@podman compose up -d backend
 	@sleep 3
 	@make db-migrate
-	@docker-compose up -d frontend
+	@podman compose up -d frontend
 
 db-backup: ## 🗄️ Backup database
 	@echo "$(BLUE)📦 Creating database backup...$(NC)"
 	@mkdir -p backups
-	@docker-compose exec -T db pg_dump -U postgres postgres > backups/backup_$$(date +%Y%m%d_%H%M%S).sql
+	@podman compose exec -T db pg_dump -U postgres postgres > backups/backup_$$(date +%Y%m%d_%H%M%S).sql
 	@echo "$(GREEN)✅ Database backup created in backups/$(NC)"
 
 db-restore: ## 🗄️ Restore database from latest backup
@@ -135,37 +135,37 @@ db-restore: ## 🗄️ Restore database from latest backup
 		exit 1; \
 	fi; \
 	echo "Restoring from: $$latest_backup"; \
-	docker-compose exec -T db psql -U postgres -d postgres < "$$latest_backup"
+	podman compose exec -T db psql -U postgres -d postgres < "$$latest_backup"
 
 ##@ 🖥️ Backend Commands
 
 backend-shell: ## 🖥️ Open backend Django shell
 	@echo "$(MAGENTA)🖥️ Opening Django shell...$(NC)"
-	@docker-compose exec backend python manage.py shell
+	@podman compose exec backend python manage.py shell
 
 backend-bash: ## 🖥️ Open backend bash shell
-	@docker-compose exec backend bash
+	@podman compose exec backend bash
 
 backend-test: ## 🧪 Run backend tests
 	@echo "$(MAGENTA)🧪 Running backend tests...$(NC)"
-	@docker-compose exec backend python manage.py test
+	@podman compose exec backend python manage.py test
 
 backend-collectstatic: ## 🖥️ Collect static files
-	@docker-compose exec backend python manage.py collectstatic --noinput
+	@podman compose exec backend python manage.py collectstatic --noinput
 
 backend-createsuperuser: ## 🖥️ Create Django superuser
-	@docker-compose exec backend python manage.py createsuperuser
+	@podman compose exec backend python manage.py createsuperuser
 
 ##@ 🎨 Frontend Commands
 
 frontend-shell: ## 🎨 Open frontend shell
-	@docker-compose exec frontend sh
+	@podman compose exec frontend sh
 
 frontend-install: ## 🎨 Install frontend dependencies
-	@docker-compose exec frontend npm install
+	@podman compose exec frontend npm install
 
 frontend-build: ## 🎨 Build frontend for production
-	@docker-compose exec frontend npm run build
+	@podman compose exec frontend npm run build
 
 ##@ 🔧 Development Tools
 
@@ -180,7 +180,7 @@ orders: ## 📝 View current orders
 install: ## 📦 Install project dependencies
 	@echo "$(YELLOW)📦 Installing project dependencies...$(NC)"
 	@command -v docker >/dev/null 2>&1 || { echo "❌ Docker is required but not installed. Aborting." >&2; exit 1; }
-	@command -v docker-compose >/dev/null 2>&1 || { echo "❌ Docker Compose is required but not installed. Aborting." >&2; exit 1; }
+	@command -v podman compose >/dev/null 2>&1 || { echo "❌ Docker Compose is required but not installed. Aborting." >&2; exit 1; }
 	@echo "$(GREEN)✅ Dependencies check passed!$(NC)"
 
 setup: install build db-migrate ## 🎯 Complete project setup
@@ -194,39 +194,39 @@ test: backend-test ## 🧪 Run all tests
 
 lint: ## 🔍 Run code linting
 	@echo "$(CYAN)🔍 Running linters...$(NC)"
-	@docker-compose exec backend flake8 . 2>/dev/null || echo "⚠️  flake8 not installed - skipping backend lint"
-	@docker-compose exec frontend npm run lint 2>/dev/null || echo "⚠️  No lint script found - skipping frontend lint"
+	@podman compose exec backend flake8 . 2>/dev/null || echo "⚠️  flake8 not installed - skipping backend lint"
+	@podman compose exec frontend npm run lint 2>/dev/null || echo "⚠️  No lint script found - skipping frontend lint"
 
 format: ## 🎨 Format code
 	@echo "$(CYAN)🎨 Formatting code...$(NC)"
-	@docker-compose exec backend black . 2>/dev/null || echo "⚠️  black not installed - skipping backend formatting"
-	@docker-compose exec frontend npm run format 2>/dev/null || echo "⚠️  No format script found - skipping frontend formatting"
+	@podman compose exec backend black . 2>/dev/null || echo "⚠️  black not installed - skipping backend formatting"
+	@podman compose exec frontend npm run format 2>/dev/null || echo "⚠️  No format script found - skipping frontend formatting"
 
 ##@ 📦 Production Commands
 
 prod: ## 🚀 Start production environment
 	@echo "$(GREEN)🚀 Starting production environment...$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	@podman compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 prod-build: ## 🚀 Build production containers
-	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+	@podman compose -f docker-compose.yml -f docker-compose.prod.yml build
 
 prod-logs: ## 📋 View production logs
-	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
+	@podman compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
 
 ##@ 📈 Monitoring & Debugging
 
 ps: ## 📊 Show running containers
-	@docker-compose ps
+	@podman compose ps
 
 top: ## 📊 Show container resource usage
-	@docker-compose top
+	@podman compose top
 
 inspect-backend: ## 🔍 Inspect backend container
-	@docker-compose exec backend env
+	@podman compose exec backend env
 
 inspect-frontend: ## 🔍 Inspect frontend container
-	@docker-compose exec frontend env
+	@podman compose exec frontend env
 
 network: ## 🌐 Show Docker network info
 	@docker network ls
@@ -255,7 +255,7 @@ doctor: ## 🩺 Run project health diagnostics
 	@echo ""
 	@echo "$(YELLOW)Docker Check:$(NC)"
 	@docker --version
-	@docker-compose --version
+	@podman compose --version
 	@echo ""
 	@echo "$(YELLOW)Services Status:$(NC)"
 	@make status

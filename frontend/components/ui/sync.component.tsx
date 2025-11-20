@@ -8,7 +8,7 @@ export default function Syncup() {
     const { isLoading, isSuccess, isFetching, isError } = useQuery({
         queryKey: ["sync"],
         queryFn: async () => {
-            const response = await axios.get(`http://${primaryUrl}:8000/api/sync`)
+            const response = await axios.get(`https://${primaryUrl}/api/sync`)
             return response
         },
         refetchOnWindowFocus: false

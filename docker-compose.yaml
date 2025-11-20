@@ -23,8 +23,6 @@ services:
       - PYTHONUNBUFFERED=1
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-    ports:
-      - "8000:8000"
     volumes:
       - ./backend:/app
     depends_on:
@@ -34,6 +32,14 @@ services:
         condition: service_healthy
     networks:
       - lobhunter
+      - proxy
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.lobhunter-api.rule=Host(`lobhunter.rndhkl.com`) && PathPrefix(`/api`) || PathPrefix(`/ws`)"
+      - "traefik.http.routers.lobhunter-api.entrypoints=websecure"
+      - "traefik.http.services.lobhunter-api.loadbalancer.server.port=8000"
+      - "traefik.http.routers.lobhunter-api.tls.certresolver=cloudflare"
   db:
     image: postgres:13.4
     environment:
@@ -55,10 +61,18 @@ services:
   frontend:
     build:
       context: ./frontend
-    ports:
-      - "3000:3000"
     networks:
+      - proxy
       - lobhunter
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lobhunter.rule=Host(`lobhunter.rndhkl.com`)"
+      - "traefik.http.routers.lobhunter.entrypoints=websecure"
+      - "traefik.http.services.lobhunter.loadbalancer.server.port=3000"
+      - "traefik.http.routers.lobhunter.tls.certresolver=cloudflare"
+
 networks:
   lobhunter:
     driver: bridge
+  proxy:
+    external: true

@@ -8,7 +8,7 @@ export function useFetchData<TData>(myqueryKey: string, url: string, options?: {
     return useQuery<TData, Error>({
         queryKey: [myqueryKey],
         queryFn: async (): Promise<TData> => {
-            const response = await fetch(`http://${primaryUrl}:8000/${url}`, options?.fetchOption)
+            const response = await fetch(`https://${primaryUrl}/${url}`, options?.fetchOption)
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }

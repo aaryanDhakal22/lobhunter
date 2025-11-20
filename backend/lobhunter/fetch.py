@@ -64,14 +64,10 @@ def fetcher():
         pprint(txt)
 
         email_id = txt["id"]
-        pprint(email_id)
         payload = txt["payload"]
-        pprint(payload)
-        # pprint(payload["body"])
         if int(payload["body"]["size"]) == 0:
             continue
         data = payload["body"]["data"]
-        pprint(data)
         data = data.replace("-", "+").replace("_", "/")
         decoded_data = base64.b64decode(data).decode("utf-8")
         all_messages.append({"email_id": email_id, "data": decoded_data})

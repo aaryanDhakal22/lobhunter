@@ -8,8 +8,13 @@ const OrdersPage: React.FC = () => {
 
 
 
-
-    const { isLoading, isSuccess, isError, data } = useFetchData<OrderProps[]>('orders', "api/orders")
+    # Add refetching after 10 seconds
+    const { isLoading, isSuccess, isError, data } = useFetchData<OrderProps[]>('orders', "api/orders", {
+        reactQueryOption: {
+            refetchInterval: 10000,
+            staleTime: 10000,
+        },
+    })
 
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
 

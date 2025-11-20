@@ -4,7 +4,7 @@ export const connectWebSocket = (
     onMessage: (kitchenTicket: KitchenTicket) => void,
     onError?: (error: Error) => void
 ): WebSocket | undefined => {
-    const WS_URL = `ws://${primaryUrl}:8000/ws/orders/`
+    const WS_URL = `wss://${primaryUrl}/ws/orders/`
 
     if (socket && socket.readyState === WebSocket.OPEN) {
         return;
